@@ -2,6 +2,7 @@ package com.back.article;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +21,10 @@ public class Article {
     private String content;
     @Column(nullable = false)
     private LocalDateTime createDate;
+
+    public Article(String title, String content) {
+        this.title = title;
+        this.content = content;
+        this.createDate = LocalDateTime.now();
+    }
 }

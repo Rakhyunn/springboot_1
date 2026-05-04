@@ -11,8 +11,9 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
-    public Article save(Article article) {
-        return articleRepository.save(article);
+    public void save(String title, String content) {
+        Article article = new Article(title, content);
+        articleRepository.save(article);
     }
 
     public List<Article> findAll() {

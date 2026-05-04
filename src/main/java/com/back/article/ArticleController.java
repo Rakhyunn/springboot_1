@@ -1,14 +1,14 @@
 package com.back.article;
 
-import jakarta.websocket.server.PathParam;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -24,7 +24,7 @@ public class ArticleController {
     }
 
     @GetMapping("/article/create")
-    public String create() {
+    public String create(ArticleForm articleForm) {
         return "article_create";
     }
 
@@ -36,12 +36,11 @@ public class ArticleController {
     }
 
     @PostMapping("/article/create")
-    public String createArticle(@PathParam("title") String title, @PathParam("content") String content) {
-        Article article = new Article();
-        article.setTitle(title);
-        article.setContent(content);
-        article.setCreateDate(LocalDateTime.now());
-        articleService.save(article);
+    public String createArticle(@Valid ArticleForm articleForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+           return "article_create";
+        }
+        articleService.save(articleForm.getTitle(), articleForm.getContent());
         return "redirect:/article/list";
     }
 }
